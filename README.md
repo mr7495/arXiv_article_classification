@@ -1,6 +1,6 @@
-# Research Article Classification Using the ArXiv Dataset
+# Research Article Classification Using the arXiv Dataset
 
-An advanced NLP pipeline for classifying scientific research articles into subject categories using their abstracts. This project implements a **Focal SciBERT** model with multi-layer pooling that achieves **72.01% accuracy** and **92.38% Top-3 accuracy** across 56 ArXiv categories, representing a **+4% improvement** over the standard SciBERT baseline through five novel architectural and methodological contributions.
+An advanced NLP pipeline for classifying scientific research articles into subject categories using their abstracts. This project implements a **Focal SciBERT** model with multi-layer pooling that achieves **72.01% accuracy** and **92.38% Top-3 accuracy** across 56 arXiv categories, representing a **+4% improvement** over the standard SciBERT baseline through five novel architectural and methodological contributions.
 
 ---
 
@@ -26,7 +26,7 @@ An advanced NLP pipeline for classifying scientific research articles into subje
 
 ## Objective
 
-Classify research articles into an **optimal number of categories** based on their abstracts using the public ArXiv dataset, with the following requirements:
+Classify research articles into an **optimal number of categories** based on their abstracts using the public arXiv dataset, with the following requirements:
 
 1. Conduct a literature review and reference top implementation sources
 2. Perform exploratory data analysis on the dataset
@@ -40,11 +40,11 @@ Classify research articles into an **optimal number of categories** based on the
 
 ## Dataset
 
-**Source:** [Cornell University ArXiv Dataset on Kaggle](https://www.kaggle.com/datasets/Cornell-University/arxiv)
+**Source:** [Cornell University arXiv Dataset on Kaggle](https://www.kaggle.com/datasets/Cornell-University/arXiv)
 
-The ArXiv dataset contains metadata for over 2.4 million scientific papers spanning more than three decades of research. Each record includes the paper's title, abstract, author list, subject categories, and update date. We use the abstract text as the input feature and the primary subject category as the classification target.
+The arXiv dataset contains metadata for over 2.4 million scientific papers spanning more than three decades of research. Each record includes the paper's title, abstract, author list, subject categories, and update date. We use the abstract text as the input feature and the primary subject category as the classification target.
 
-ArXiv employs a hierarchical two-level taxonomy: major categories (e.g., `cs`, `math`, `astro-ph`) and subcategories (e.g., `cs.AI`, `math.AG`, `astro-ph.CO`). Each paper may carry one or more category labels.
+arXiv employs a hierarchical two-level taxonomy: major categories (e.g., `cs`, `math`, `astro-ph`) and subcategories (e.g., `cs.AI`, `math.AG`, `astro-ph.CO`). Each paper may carry one or more category labels.
 
 | Property | Value |
 |:---------|:------|
@@ -70,7 +70,7 @@ BERT introduced bidirectional pre-training using masked language modeling and ne
 ### 2. SciBERT: A Pretrained Language Model for Scientific Text
 **Beltagy, I., Lo, K., and Cohan, A. (2019). EMNLP.**
 
-SciBERT extends BERT by pre-training on 1.14 million scientific papers from Semantic Scholar with a custom scientific vocabulary (scivocab, 30,522 tokens). It outperforms general-domain BERT by 1-5% on scientific NLP benchmarks. We adopt SciBERT (`allenai/scibert_scivocab_uncased`) as our backbone because its vocabulary better tokenizes domain-specific terminology found in ArXiv abstracts, reducing unknown tokens and improving representation quality.
+SciBERT extends BERT by pre-training on 1.14 million scientific papers from Semantic Scholar with a custom scientific vocabulary (scivocab, 30,522 tokens). It outperforms general-domain BERT by 1-5% on scientific NLP benchmarks. We adopt SciBERT (`allenai/scibert_scivocab_uncased`) as our backbone because its vocabulary better tokenizes domain-specific terminology found in arXiv abstracts, reducing unknown tokens and improving representation quality.
 
 ### 3. How to Fine-Tune BERT for Text Classification
 **Sun, C., Qiu, X., Xu, Y., and Huang, X. (2019). CCL.**
@@ -131,13 +131,13 @@ We analyzed the coverage-versus-granularity trade-off across different minimum s
 
 ### Parent-Child Collision Analysis (Critical Finding)
 
-The most impactful EDA finding: ArXiv contains both parent categories (e.g., `astro-ph`) and child categories (e.g., `astro-ph.CO`, `astro-ph.GA`) as simultaneous classification targets. This creates an inherently impossible classification boundary. Our analysis confirmed `astro-ph` as the primary collision parent, affecting ~17,800 papers in our sample. This was resolved in preprocessing (see below).
+The most impactful EDA finding: arXiv contains both parent categories (e.g., `astro-ph`) and child categories (e.g., `astro-ph.CO`, `astro-ph.GA`) as simultaneous classification targets. This creates an inherently impossible classification boundary. Our analysis confirmed `astro-ph` as the primary collision parent, affecting ~17,800 papers in our sample. This was resolved in preprocessing (see below).
 
 ---
 
 ## Data Preprocessing
 
-Our pipeline transforms raw ArXiv metadata into model-ready inputs through six stages:
+Our pipeline transforms raw arXiv metadata into model-ready inputs through six stages:
 
 | Stage | Operation | Purpose |
 |:------|:----------|:--------|
@@ -308,7 +308,7 @@ We performed a structured search over three parameters with the highest expected
 
 ## Optimal Number of Categories
 
-**Recommendation: 56 categories** (primary ArXiv categories with >=500 samples, parent-child collisions resolved).
+**Recommendation: 56 categories** (primary arXiv categories with >=500 samples, parent-child collisions resolved).
 
 This was determined through analysis at three granularity levels:
 
@@ -340,7 +340,7 @@ This provides the optimal balance between granularity (fine-grained subcategory 
 
 - **Multi-label classification** using BCEWithLogitsLoss to capture papers spanning multiple fields simultaneously
 - **Hierarchical cascade classification**: predict major category first, then subcategory using specialized expert heads
-- **Continued pre-training** of SciBERT on recent ArXiv papers (2022-2025) to address vocabulary drift
+- **Continued pre-training** of SciBERT on recent arXiv papers (2022-2025) to address vocabulary drift
 - **Cross-attention ensemble** combining SciBERT with general-domain DeBERTa-v3 for broader coverage
 - **Embedding-based clustering** using UMAP + HDBSCAN on BERT embeddings to discover latent category structures
 
@@ -354,7 +354,7 @@ This provides the optimal balance between granularity (fine-grained subcategory 
 
 ### Steps
 
-1. **Upload notebook** to Google Colab: `ArXiv_Research_Article_Classification.ipynb`
+1. **Upload notebook** to Google Colab: `arXiv_Research_Article_Classification.ipynb`
 2. **Set GPU runtime**: Runtime > Change runtime type > T4 GPU
 3. **Configure Kaggle**: The notebook uses `kagglehub` which prompts for authentication
 4. **Run all cells**: Runtime > Run all
@@ -375,9 +375,9 @@ This provides the optimal balance between granularity (fine-grained subcategory 
 
 ```
 .
-|-- ArXiv_Research_Article_Classification.ipynb    # Main notebook (complete pipeline)
-|-- ArXiv_Article_Classification_Report.docx    # Final report (Word format)
-|-- ArXiv_Article_Classification_Report.pdf     # Final report (PDF format)
+|-- arXiv_Research_Article_Classification.ipynb    # Main notebook (complete pipeline)
+|-- arXiv_Article_Classification_Report.docx    # Final report (Word format)
+|-- arXiv_Article_Classification_Report.pdf     # Final report (PDF format)
 |-- README.md                                 # This file
 ```
 
